@@ -1,35 +1,4 @@
-const settings = {
-  maxPlayerServers: 25,
-  gbRamCost: 55000,
-  maxGbRam: 1048576,
-  minGbRam: 64,
-  totalMoneyAllocation: 0.9,
-  actions: {
-    BUY: 'buy',
-    UPGRADE: 'upgrade',
-  },
-  keys: {
-    serverMap: 'BB_SERVER_MAP',
-  },
-}
-
-function getItem(key) {
-  let item = localStorage.getItem(key)
-
-  return item ? JSON.parse(item) : undefined
-}
-
-function setItem(key, value) {
-  localStorage.setItem(key, JSON.stringify(value))
-}
-
-function localeHHMMSS(ms = 0) {
-  if (!ms) {
-    ms = new Date().getTime()
-  }
-
-  return new Date(ms).toLocaleTimeString()
-}
+import { settings, getItem, setItem, localeHHMMSS } from 'common.js'
 
 function createUUID() {
   var dt = new Date().getTime()
@@ -84,7 +53,7 @@ function getPurchasedServers(ns) {
 }
 
 export async function main(ns) {
-  ns.tprint(`[${localeHHMMSS()}] Starting playerServers.ns`)
+  ns.tprint(`[${localeHHMMSS()}] Starting playerServers`)
 
   settings.maxGbRam = ns.getPurchasedServerMaxRam()
   settings.maxPlayerServers = ns.getPurchasedServerLimit()

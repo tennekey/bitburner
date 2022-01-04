@@ -1,40 +1,7 @@
-import { settings, setItem } from 'common.ns'
-
-const hackPrograms = ['BruteSSH.exe', 'FTPCrack.exe', 'relaySMTP.exe', 'HTTPWorm.exe', 'SQLInject.exe']
-
-function getPlayerDetails(ns) {
-  let portHacks = 0
-
-  hackPrograms.forEach((hackProgram) => {
-    if (ns.fileExists(hackProgram, 'home')) {
-      portHacks += 1
-    }
-  })
-
-  return {
-    hackingLevel: ns.getHackingLevel(),
-    portHacks,
-  }
-}
-
-function allHacks(host) {
-  ns.brutessh(host)
-  ns.ftpcrack(host)
-  ns.relaysmtp(host)
-  ns.httpworm(host)
-  ns.sqlinject(host)
-}
-
-function localeHHMMSS(ms = 0) {
-  if (!ms) {
-    ms = new Date().getTime()
-  }
-
-  return new Date(ms).toLocaleTimeString()
-}
+import { settings, setItem, localeHHMMSS, getPlayerDetails } from 'common.js'
 
 export async function main(ns) {
-  ns.tprint(`[${localeHHMMSS()}] Starting spider.ns`)
+  ns.tprint(`[${localeHHMMSS()}] Starting spider`)
 
   const scriptToRunAfter = ns.args[0]
 
@@ -65,7 +32,7 @@ export async function main(ns) {
     const playerDetails = getPlayerDetails(ns)
     if (!ns.hasRootAccess(host)) {
       if (serverMap.servers[host].ports <= playerDetails.portHacks && serverMap.servers[host].hackingLevel <= playerDetails.hackingLevel) {
-        hackPrograms.forEach((hackProgram) => {
+        settings.hackPrograms.forEach((hackProgram) => {
           if (ns.fileExists(hackProgram, 'home')) {
             ns[hackProgram.split('.').shift().toLocaleLowerCase()](host)
           }
@@ -142,8 +109,8 @@ export async function main(ns) {
   setItem(settings().keys.serverMap, serverMap)
 
   if (!scriptToRunAfter) {
-    ns.tprint(`[${localeHHMMSS()}] Spawning mainHack.ns`)
-    ns.spawn('mainHack.ns', 1)
+    ns.tprint(`[${localeHHMMSS()}] Spawning mainHack`)
+    ns.spawn('mainHack.js', 1)
   } else {
     ns.tprint(`[${localeHHMMSS()}] Spawning ${scriptToRunAfter}`)
     ns.spawn(scriptToRunAfter, 1)
