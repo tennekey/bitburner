@@ -1,4 +1,4 @@
-import { settings, getItem } from 'common.js'
+import { settings, getItem, localeHHMMSS } from 'common.js'
 
 const scriptsToKill = [
   'mainHack.js',
@@ -13,14 +13,6 @@ const scriptsToKill = [
   'find.js',
 ]
 
-function localeHHMMSS(ms = 0) {
-  if (!ms) {
-    ms = new Date().getTime()
-  }
-
-  return new Date(ms).toLocaleTimeString()
-}
-
 export async function main(ns) {
   ns.tprint(`[${localeHHMMSS()}] Starting killAll`)
 
@@ -32,9 +24,9 @@ export async function main(ns) {
     throw new Exception('Run the script from home')
   }
 
-  const serverMap = getItem(settings.keys.serverMap)
+  const serverMap = getItem(settings().keys.serverMap)
 
-  if (!serverMap || serverMap.lastUpdate < new Date().getTime() - settings.mapRefreshInterval) {
+  if (!serverMap || serverMap.lastUpdate < new Date().getTime() - settings().mapRefreshInterval) {
     ns.tprint(`[${localeHHMMSS()}] Spawning spider`)
     ns.spawn('spider.js', 1, 'killAll.js')
     ns.exit()

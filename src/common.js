@@ -53,7 +53,7 @@ export function setItem(key, value) {
 export function getPlayerDetails(ns) {
   let portHacks = 0
 
-  settings.hackPrograms.forEach((hackProgram) => {
+  settings().hackPrograms.forEach((hackProgram) => {
     if (ns.fileExists(hackProgram, 'home')) {
       portHacks += 1
     }

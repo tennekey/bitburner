@@ -32,7 +32,7 @@ export async function main(ns) {
     const playerDetails = getPlayerDetails(ns)
     if (!ns.hasRootAccess(host)) {
       if (serverMap.servers[host].ports <= playerDetails.portHacks && serverMap.servers[host].hackingLevel <= playerDetails.hackingLevel) {
-        settings.hackPrograms.forEach((hackProgram) => {
+        settings().hackPrograms.forEach((hackProgram) => {
           if (ns.fileExists(hackProgram, 'home')) {
             ns[hackProgram.split('.').shift().toLocaleLowerCase()](host)
           }
