@@ -1,23 +1,5 @@
 // Based on https://github.com/danielyxie/bitburner/blob/master/src/data/codingcontracttypes.ts
-const settings = {
-  keys: {
-    serverMap: 'BB_SERVER_MAP',
-  },
-}
-
-function getItem(key) {
-  let item = localStorage.getItem(key)
-
-  return item ? JSON.parse(item) : undefined
-}
-
-function localeHHMMSS(ms = 0) {
-  if (!ms) {
-    ms = new Date().getTime()
-  }
-
-  return new Date(ms).toLocaleTimeString()
-}
+import { settings, getItem, localeHHMMSS } from 'common.js'
 
 function convert2DArrayToString(arr) {
   var components = []
@@ -410,7 +392,7 @@ export async function main(ns) {
     throw new Exception('Run the script from home')
   }
 
-  const serverMap = getItem(settings.keys.serverMap)
+  const serverMap = getItem(settings().keys.serverMap)
   const contractsDb = []
 
   Object.keys(serverMap.servers).forEach((hostname) => {
