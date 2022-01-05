@@ -53,7 +53,7 @@ function getPurchasedServers(ns) {
 }
 
 export async function main(ns) {
-  ns.tprint(`[${localeHHMMSS()}] Starting playerServers`)
+  ns.print(`[${localeHHMMSS()}] Starting playerServers`)
 
   settings().maxGbRam = ns.getPurchasedServerMaxRam()
   settings().maxPlayerServers = ns.getPurchasedServerLimit()
@@ -91,7 +91,7 @@ export async function main(ns) {
         hostname = ns.purchaseServer(hostname, targetRam)
 
         if (hostname) {
-          ns.tprint(`[${localeHHMMSS()}] Bought new server: ${hostname} (${targetRam} GB)`)
+          ns.print(`[${localeHHMMSS()}] Bought new server: ${hostname} (${targetRam} GB)`)
 
           updateServer(ns, serverMap, hostname)
           didChange = true
@@ -103,7 +103,7 @@ export async function main(ns) {
       let targetRam = biggestCurrentServer
 
       if (smallestCurrentServer === settings().maxGbRam) {
-        ns.tprint(`[${localeHHMMSS()}] All servers maxxed. Exiting.`)
+        ns.print(`[${localeHHMMSS()}] All servers maxxed. Exiting.`)
         ns.exit()
         return
       }
@@ -136,7 +136,7 @@ export async function main(ns) {
                 hostname = await ns.purchaseServer(hostname, targetRam)
 
                 if (hostname) {
-                  ns.tprint(`[${localeHHMMSS()}] Upgraded: ${purchasedServers[0]} into server: ${hostname} (${targetRam} GB)`)
+                  ns.print(`[${localeHHMMSS()}] Upgraded: ${purchasedServers[0]} into server: ${hostname} (${targetRam} GB)`)
 
                   updateServer(ns, serverMap, hostname)
                   didChange = true

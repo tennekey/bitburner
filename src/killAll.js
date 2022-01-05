@@ -10,11 +10,10 @@ const scriptsToKill = [
   'runHacking.js',
   'initHacking.js',
   'start.js',
-  'find.js',
 ]
 
 export async function main(ns) {
-  ns.tprint(`[${localeHHMMSS()}] Starting killAll`)
+  ns.print(`[${localeHHMMSS()}] Starting killAll`)
 
   const scriptToRunAfter = ns.args[0]
 
@@ -27,7 +26,7 @@ export async function main(ns) {
   const serverMap = getItem(settings().keys.serverMap)
 
   if (!serverMap || serverMap.lastUpdate < new Date().getTime() - settings().mapRefreshInterval) {
-    ns.tprint(`[${localeHHMMSS()}] Spawning spider`)
+    ns.print(`[${localeHHMMSS()}] Spawning spider`)
     ns.spawn('spider.js', 1, 'killAll.js')
     ns.exit()
     return
@@ -45,13 +44,13 @@ export async function main(ns) {
     await ns.killall(killAbleServers[i])
   }
 
-  ns.tprint(`[${localeHHMMSS()}] All processes killed`)
+  ns.print(`[${localeHHMMSS()}] All processes killed`)
 
   if (scriptToRunAfter) {
-    ns.tprint(`[${localeHHMMSS()}] Spawning ${scriptToRunAfter}`)
+    ns.print(`[${localeHHMMSS()}] Spawning ${scriptToRunAfter}`)
     ns.spawn(scriptToRunAfter, 1)
   } else {
-    ns.tprint(`[${localeHHMMSS()}] Spawning runHacking`)
+    ns.print(`[${localeHHMMSS()}] Spawning runHacking`)
     ns.spawn('runHacking.js', 1)
   }
 }

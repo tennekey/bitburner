@@ -1,7 +1,7 @@
 import { settings, setItem, localeHHMMSS, getPlayerDetails } from 'common.js'
 
 export async function main(ns) {
-  ns.tprint(`[${localeHHMMSS()}] Starting spider`)
+  ns.print(`[${localeHHMMSS()}] Starting spider`)
 
   const scriptToRunAfter = ns.args[0]
 
@@ -109,10 +109,10 @@ export async function main(ns) {
   setItem(settings().keys.serverMap, serverMap)
 
   if (!scriptToRunAfter) {
-    ns.tprint(`[${localeHHMMSS()}] Spawning mainHack`)
+    ns.print(`[${localeHHMMSS()}] Spawning mainHack`)
     ns.spawn('mainHack.js', 1)
   } else {
-    ns.tprint(`[${localeHHMMSS()}] Spawning ${scriptToRunAfter}`)
+    ns.print(`[${localeHHMMSS()}] Spawning ${scriptToRunAfter}`)
     ns.spawn(scriptToRunAfter, 1)
   }
 }

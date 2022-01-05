@@ -97,7 +97,7 @@ function findTargetServer(ns, serversList, servers, serverExtraData) {
 }
 
 export async function main(ns) {
-  ns.tprint(`[${localeHHMMSS()}] Starting mainHack`)
+  ns.print(`[${localeHHMMSS()}] Starting mainHack`)
 
   let hostname = ns.getHostname()
 
@@ -113,7 +113,7 @@ export async function main(ns) {
     }
 
     if (!serverMap || serverMap.lastUpdate < new Date().getTime() - settings().mapRefreshInterval) {
-      ns.tprint(`[${localeHHMMSS()}] Spawning spider`)
+      ns.print(`[${localeHHMMSS()}] Spawning spider`)
       ns.spawn('spider.js', 1, 'mainHack.js')
       ns.exit()
       return
@@ -154,20 +154,20 @@ export async function main(ns) {
     }
     weakenCycles = growCycles
 
-    ns.tprint(
+    ns.print(
       `[${localeHHMMSS()}] Selected ${bestTarget} for a target. Planning to ${action} the server. Will wake up around ${localeHHMMSS(
         new Date().getTime() + weakenTime + 300
       )}`
     )
-    ns.tprint(
+    ns.print(
       `[${localeHHMMSS()}] Stock values: baseSecurity: ${serverMap.servers[bestTarget].baseSecurityLevel}; minSecurity: ${serverMap.servers[bestTarget].minSecurityLevel
       }; maxMoney: $${numberWithCommas(parseInt(serverMap.servers[bestTarget].maxMoney, 10))}`
     )
-    ns.tprint(`[${localeHHMMSS()}] Current values: security: ${Math.floor(securityLevel * 1000) / 1000}; money: $${numberWithCommas(parseInt(money, 10))}`)
-    ns.tprint(
+    ns.print(`[${localeHHMMSS()}] Current values: security: ${Math.floor(securityLevel * 1000) / 1000}; money: $${numberWithCommas(parseInt(money, 10))}`)
+    ns.print(
       `[${localeHHMMSS()}] Time to: hack: ${convertMSToHHMMSS(hackTime)}; grow: ${convertMSToHHMMSS(growTime)}; weaken: ${convertMSToHHMMSS(weakenTime)}`
     )
-    ns.tprint(`[${localeHHMMSS()}] Delays: ${convertMSToHHMMSS(hackDelay)} for hacks, ${convertMSToHHMMSS(growDelay)} for grows`)
+    ns.print(`[${localeHHMMSS()}] Delays: ${convertMSToHHMMSS(hackDelay)} for hacks, ${convertMSToHHMMSS(growDelay)} for grows`)
 
     if (action === 'weaken') {
       if (settings().changes.weaken * weakenCycles > securityLevel - serverMap.servers[bestTarget].minSecurityLevel) {
@@ -182,7 +182,7 @@ export async function main(ns) {
         growCycles = 0
       }
 
-      ns.tprint(
+      ns.print(
         `[${localeHHMMSS()}] Cycles ratio: ${growCycles} grow cycles; ${weakenCycles} weaken cycles; expected security reduction: ${Math.floor(settings().changes.weaken * weakenCycles * 1000) / 1000
         }`
       )
@@ -207,7 +207,7 @@ export async function main(ns) {
       weakenCycles = weakenCyclesForGrow(growCycles)
       growCycles -= weakenCycles
 
-      ns.tprint(`[${localeHHMMSS()}] Cycles ratio: ${growCycles} grow cycles; ${weakenCycles} weaken cycles`)
+      ns.print(`[${localeHHMMSS()}] Cycles ratio: ${growCycles} grow cycles; ${weakenCycles} weaken cycles`)
 
       for (let i = 0; i < vulnerableServers.length; i++) {
         const server = serverMap.servers[vulnerableServers[i]]
@@ -246,7 +246,7 @@ export async function main(ns) {
         hackCycles -= Math.ceil((weakenCycles * 1.75) / 1.7)
       }
 
-      ns.tprint(`[${localeHHMMSS()}] Cycles ratio: ${hackCycles} hack cycles; ${growCycles} grow cycles; ${weakenCycles} weaken cycles`)
+      ns.print(`[${localeHHMMSS()}] Cycles ratio: ${hackCycles} hack cycles; ${growCycles} grow cycles; ${weakenCycles} weaken cycles`)
 
       for (let i = 0; i < vulnerableServers.length; i++) {
         const server = serverMap.servers[vulnerableServers[i]]

@@ -1,7 +1,7 @@
 import { localeHHMMSS } from 'common.js'
 
 export async function main(ns) {
-  ns.tprint(`[${localeHHMMSS()}] Starting runHacking`)
+  ns.print(`[${localeHHMMSS()}] Starting runHacking`)
 
   let hostname = ns.getHostname()
 
@@ -12,13 +12,13 @@ export async function main(ns) {
   const homeRam = ns.getServerRam('home').shift()
 
   if (homeRam >= 32) {
-    ns.tprint(`[${localeHHMMSS()}] Spawning spider`)
+    ns.print(`[${localeHHMMSS()}] Spawning spider`)
     await ns.run('spider.js', 1, 'mainHack.js')
     await ns.sleep(3000)
-    ns.tprint(`[${localeHHMMSS()}] Spawning playerServers`)
+    ns.print(`[${localeHHMMSS()}] Spawning playerServers`)
     ns.spawn('playerServers.js', 1)
   } else {
-    ns.tprint(`[${localeHHMMSS()}] Spawning spider`)
+    ns.print(`[${localeHHMMSS()}] Spawning spider`)
     ns.spawn('spider.js', 1, 'mainHack.js')
   }
 }
