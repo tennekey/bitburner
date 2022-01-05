@@ -9,7 +9,7 @@ export async function main(ns) {
     throw new Exception('Run the script from home')
   }
 
-  const homeRam = ns.getServerRam('home').shift()
+  const homeRam = ns.getServerMaxRam('home')
 
   if (homeRam >= 32) {
     ns.print(`[${localeHHMMSS()}] Spawning spider`)

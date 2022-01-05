@@ -2,7 +2,7 @@ export function settings() {
   return {
     stockCommission: 100000,
     hackPrograms: ['BruteSSH.exe', 'FTPCrack.exe', 'relaySMTP.exe', 'HTTPWorm.exe', 'SQLInject.exe'],
-    homeRamReserved: 20,
+    homeRamReserved: 25,
     homeRamReservedBase: 20,
     homeRamExtraRamReserved: 12,
     homeRamBigMode: 64,

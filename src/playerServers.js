@@ -19,7 +19,8 @@ function updateServer(ns, serverMap, host) {
     growth: ns.getServerGrowth(host),
     minSecurityLevel: ns.getServerMinSecurityLevel(host),
     baseSecurityLevel: ns.getServerBaseSecurityLevel(host),
-    ram: ns.getServerRam(host)[0],
+    ram: ns.getServerMaxRam(host),
+    usedRam: ns.getServerUsedRam(host),
     connections: ['home'],
     parent: 'home',
     children: [],
@@ -38,11 +39,11 @@ function getPurchasedServers(ns) {
   let purchasedServers = ns.getPurchasedServers()
   if (purchasedServers.length) {
     purchasedServers.sort((a, b) => {
-      const totalRamA = ns.getServerRam(a).shift()
-      const totalRamB = ns.getServerRam(b).shift()
+      const totalRamA = ns.getServerMaxRam(a)
+      const totalRamB = ns.getServerMaxRam(b)
 
       if (totalRamA === totalRamB) {
-        return ns.getServerRam(a).shift() - ns.getServerRam(b).shift()
+        return ns.getServerMaxRam(a) - ns.getServerMaxRam(b)
       } else {
         return totalRamA - totalRamB
       }
@@ -72,7 +73,7 @@ export async function main(ns) {
     let action = purchasedServers.length < settings().maxPlayerServers ? settings().actions.BUY : settings().actions.UPGRADE
 
     if (action == settings().actions.BUY) {
-      let smallestCurrentServer = purchasedServers.length ? ns.getServerRam(purchasedServers[0]).shift() : 0
+      let smallestCurrentServer = purchasedServers.length ? ns.getServerMaxRam(purchasedServers[0]) : 0
       let targetRam = Math.max(settings().minGbRam, smallestCurrentServer)
 
       if (targetRam === settings().minGbRam) {
@@ -98,8 +99,8 @@ export async function main(ns) {
         }
       }
     } else {
-      let smallestCurrentServer = Math.max(ns.getServerRam(purchasedServers[0]).shift(), settings().minGbRam)
-      let biggestCurrentServer = ns.getServerRam(purchasedServers[purchasedServers.length - 1]).shift()
+      let smallestCurrentServer = Math.max(ns.getServerMaxRam(purchasedServers[0]), settings().minGbRam)
+      let biggestCurrentServer = ns.getServerMaxRam(purchasedServers[purchasedServers.length - 1])
       let targetRam = biggestCurrentServer
 
       if (smallestCurrentServer === settings().maxGbRam) {
@@ -125,7 +126,7 @@ export async function main(ns) {
           didChange = false
           purchasedServers = getPurchasedServers(ns)
 
-          if (targetRam > ns.getServerRam(purchasedServers[0]).shift()) {
+          if (targetRam > ns.getServerMaxRam(purchasedServers[0])) {
             if (ns.getServerMoneyAvailable('home') * settings().totalMoneyAllocation >= targetRam * settings().gbRamCost) {
               let hostname = `pserv-${targetRam}-${createUUID()}`
 
