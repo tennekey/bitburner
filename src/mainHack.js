@@ -36,15 +36,15 @@ function weakenCyclesForHack(hackCycles) {
   return Math.max(0, Math.ceil(hackCycles * (settings().changes.hack / settings().changes.weaken)))
 }
 
-async function getHackableServers(ns, servers) {
+async function getVulnerableServers(ns, servers) {
   const playerDetails = getPlayerDetails(ns)
 
-  const hackableServers = Object.keys(servers)
+  const vulnerableServers = Object.keys(servers)
     .filter((hostname) => ns.serverExists(hostname))
     .filter((hostname) => servers[hostname].ports <= playerDetails.portHacks || ns.hasRootAccess(hostname))
     .filter((hostname) => servers[hostname].ram >= 2)
 
-  for (const hostname of hackableServers) {
+  for (const hostname of vulnerableServers) {
     if (hostname === 'home') continue;
     if (!ns.hasRootAccess(hostname)) {
       settings().hackPrograms.forEach((hackProgram) => {
@@ -59,8 +59,8 @@ async function getHackableServers(ns, servers) {
 
   }
 
-  hackableServers.sort((a, b) => servers[a].ram - servers[b].ram)
-  return hackableServers
+  vulnerableServers.sort((a, b) => servers[a].ram - servers[b].ram)
+  return vulnerableServers
 }
 
 function findTargetServer(ns, serversList, servers, serverExtraData) {
@@ -120,13 +120,13 @@ export async function main(ns) {
     }
     serverMap.servers.home.ram = Math.max(0, serverMap.servers.home.ram - settings().homeRamReserved)
 
-    const hackableServers = await getHackableServers(ns, serverMap.servers)
+    const vulnerableServers = await getVulnerableServers(ns, serverMap.servers)
 
-    const targetServers = findTargetServer(ns, hackableServers, serverMap.servers, serverExtraData)
+    const targetServers = findTargetServer(ns, vulnerableServers, serverMap.servers, serverExtraData)
     const bestTarget = targetServers.shift()
-    const hackTime = ns.getHackTime(bestTarget) * 1000
-    const growTime = ns.getGrowTime(bestTarget) * 1000
-    const weakenTime = ns.getWeakenTime(bestTarget) * 1000
+    const hackTime = ns.getHackTime(bestTarget)
+    const growTime = ns.getGrowTime(bestTarget)
+    const weakenTime = ns.getWeakenTime(bestTarget)
 
     const growDelay = Math.max(0, weakenTime - growTime - 15 * 1000)
     const hackDelay = Math.max(0, growTime + growDelay - hackTime - 15 * 1000)
@@ -147,8 +147,8 @@ export async function main(ns) {
     let growCycles = 0
     let weakenCycles = 0
 
-    for (let i = 0; i < hackableServers.length; i++) {
-      const server = serverMap.servers[hackableServers[i]]
+    for (let i = 0; i < vulnerableServers.length; i++) {
+      const server = serverMap.servers[vulnerableServers[i]]
       hackCycles += Math.floor(server.ram / 1.7)
       growCycles += Math.floor(server.ram / 1.75)
     }
@@ -187,8 +187,8 @@ export async function main(ns) {
         }`
       )
 
-      for (let i = 0; i < hackableServers.length; i++) {
-        const server = serverMap.servers[hackableServers[i]]
+      for (let i = 0; i < vulnerableServers.length; i++) {
+        const server = serverMap.servers[vulnerableServers[i]]
         let cyclesFittable = Math.max(0, Math.floor(server.ram / 1.75))
         const cyclesToRun = Math.max(0, Math.min(cyclesFittable, growCycles))
 
@@ -209,8 +209,8 @@ export async function main(ns) {
 
       ns.tprint(`[${localeHHMMSS()}] Cycles ratio: ${growCycles} grow cycles; ${weakenCycles} weaken cycles`)
 
-      for (let i = 0; i < hackableServers.length; i++) {
-        const server = serverMap.servers[hackableServers[i]]
+      for (let i = 0; i < vulnerableServers.length; i++) {
+        const server = serverMap.servers[vulnerableServers[i]]
         let cyclesFittable = Math.max(0, Math.floor(server.ram / 1.75))
         const cyclesToRun = Math.max(0, Math.min(cyclesFittable, growCycles))
 
@@ -248,8 +248,8 @@ export async function main(ns) {
 
       ns.tprint(`[${localeHHMMSS()}] Cycles ratio: ${hackCycles} hack cycles; ${growCycles} grow cycles; ${weakenCycles} weaken cycles`)
 
-      for (let i = 0; i < hackableServers.length; i++) {
-        const server = serverMap.servers[hackableServers[i]]
+      for (let i = 0; i < vulnerableServers.length; i++) {
+        const server = serverMap.servers[vulnerableServers[i]]
         let cyclesFittable = Math.max(0, Math.floor(server.ram / 1.7))
         const cyclesToRun = Math.max(0, Math.min(cyclesFittable, hackCycles))
 
