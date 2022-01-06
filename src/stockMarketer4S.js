@@ -1,4 +1,6 @@
-import { localeHHMMSS, sellShorts, sellLongs, getStockInfo } from 'common.js'
+import { settings, localeHHMMSS, sellShorts, sellLongs, getStockInfo } from 'common.js'
+// NOTE: You need to be on BitNode 8 to Buy/Sell Shorts.
+// Comment out lines 17, 30, & 57-62 if not
 
 let stockSymbols
 let corpus
@@ -73,7 +75,7 @@ export async function main(ns) {
 
   stockSymbols = ns.stock.getSymbols()
 
-  corpus = ns.getServerMoneyAvailable('home') - 1000000
+  corpus = ns.getServerMoneyAvailable('home') - settings().stockCommission
   stockSymbols.forEach((stockSymbol) => {
     const stockInfo = getStockInfo(ns, stockSymbol)
 
@@ -109,7 +111,6 @@ export async function main(ns) {
     stockSymbols.forEach((stockSymbol) => buyNewShares(ns, stockSymbol))
     await ns.asleep(5)
 
-    ns.print(`[${localeHHMMSS()}] After transactions: corpus: ${ns.nFormat(corpus, '$0.000a')}`)
     await ns.asleep(3500)
     tickCounter++
   }

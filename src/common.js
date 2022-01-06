@@ -2,21 +2,21 @@ export function settings() {
   return {
     stockCommission: 100000,
     hackPrograms: ['BruteSSH.exe', 'FTPCrack.exe', 'relaySMTP.exe', 'HTTPWorm.exe', 'SQLInject.exe'],
-    homeRamReserved: 30,
-    homeRamReservedBase: 20,
-    homeRamExtraRamReserved: 12,
+    homeRamReserved: 100,
+    homeRamReservedBase: 20, // Represents how much memory the base hacking scripts will take
+    homeRamExtraRamReserved: 80, //Represents any additional memory (in GB) to be set aside for player use
     homeRamBigMode: 64,
     minSecurityLevelOffset: 1,
-    maxMoneyMultiplier: 0.9,
+    maxMoneyMultiplier: 0.9, // Ratio of max money available on server before hack will carry out
     minSecurityWeight: 100,
-    mapRefreshInterval: 6 * 60 * 60 * 1000,
-    maxWeakenTime: 60 * 60 * 1000,
+    mapRefreshInterval: 6 * 60 * 60 * 1000, // Time interval for main process to re-crawl servers for refreshed info
+    maxWeakenTime: 30 * 60 * 1000, // Max time to wait for weaken process
     maxPlayerServers: 25,
     gbRamCost: 55000,
-    maxGbRam: 1048576,
-    minGbRam: 64,
-    affectStock: false,
-    totalMoneyAllocation: 0.9,
+    maxGbRam: 1048576, // Maximum RAM amount (in GB) allowed for player purchased servers
+    minGbRam: 64, // Minimum RAM amount (in GB) for auto-purchased servers
+    affectStock: false, // Whether hack/grow/weaken should affect stock prices
+    totalMoneyAllocation: 0.9, // Amount of total player money to allocate into stocks
     keys: {
       serverMap: 'BB_SERVER_MAP',
       hackTarget: 'BB_HACK_TARGET',
