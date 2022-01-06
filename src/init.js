@@ -9,6 +9,9 @@ const filesToDownload = [
   'playerServers.js',
   'killAll.js',
   'runHacking.js',
+  'contractor.js',
+  'stockMarketer4s.js',
+  'sellAllStock.js'
 ]
 const valuesToRemove = ['BB_SERVER_MAP']
 
@@ -21,7 +24,7 @@ function localeHHMMSS(ms = 0) {
 }
 
 export async function main(ns) {
-  ns.tprint(`[${localeHHMMSS()}] Starting initHacking`)
+  ns.tprint(`[${localeHHMMSS()}] Initializing scripts...`)
 
   let hostname = ns.getHostname()
 
@@ -35,12 +38,13 @@ export async function main(ns) {
     await ns.scriptKill(filename, 'home')
     await ns.rm(filename)
     await ns.asleep(200)
-    ns.tprint(`[${localeHHMMSS()}] Trying to download ${path}`)
+    ns.tprint(`[${localeHHMMSS()}] Downloading ${path}...`)
     await ns.wget(path + '?ts=' + new Date().getTime(), filename)
+    ns.tprint(`[${localeHHMMSS()}] Success`)
   }
 
   valuesToRemove.map((value) => localStorage.removeItem(value))
 
-  ns.tprint(`[${localeHHMMSS()}] Spawning killAll`)
+  ns.print(`[${localeHHMMSS()}] Spawning killAll`)
   ns.spawn('killAll.js', 1, 'runHacking.js')
 }
