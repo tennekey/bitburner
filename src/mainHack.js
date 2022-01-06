@@ -52,7 +52,7 @@ async function getVulnerableServers(ns, servers) {
   return vulnerableServers
 }
 
-function findTargetServer(ns, serversList, servers) {
+function findTargetServer(ns, serversList, servers, serverExtraData) {
   const playerDetails = getPlayerDetails(ns)
 
   serversList = serversList
@@ -62,6 +62,11 @@ function findTargetServer(ns, serversList, servers) {
     .filter((hostname) => ns.getWeakenTime(hostname) < settings().maxWeakenTime)
 
   let weightedServers = serversList.map((hostname) => {
+    const fullHackCycles = Math.ceil(100 / Math.max(0.00000001, ns.hackAnalyze(hostname)))
+
+    serverExtraData[hostname] = {
+      fullHackCycles,
+    }
     
     const serverValue = servers[hostname].maxMoney * (settings().minSecurityWeight / (servers[hostname].minSecurityLevel + ns.getServerSecurityLevel(hostname)))
 
@@ -90,6 +95,7 @@ export async function main(ns) {
   }
 
   while (true) {
+    const serverExtraData = {}
     const serverMap = getItem(settings().keys.serverMap)
     if (serverMap.servers.home.ram >= settings().homeRamBigMode) {
       settings().homeRamReserved = settings().homeRamReservedBase + settings().homeRamExtraRamReserved
@@ -106,7 +112,7 @@ export async function main(ns) {
 
     const vulnerableServers = await getVulnerableServers(ns, serverMap.servers)
 
-    const targetServers = findTargetServer(ns, vulnerableServers, serverMap.servers)
+    const targetServers = findTargetServer(ns, vulnerableServers, serverMap.servers, serverExtraData)
     const bestTarget = targetServers.shift()
     const hackTime = ns.getHackTime(bestTarget)
     const growTime = ns.getGrowTime(bestTarget)
