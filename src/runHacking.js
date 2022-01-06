@@ -14,7 +14,7 @@ export async function main(ns) {
   if (homeRam >= 32) {
     ns.print(`[${localeHHMMSS()}] Spawning spider`)
     await ns.run('spider.js', 1, 'mainHack.js')
-    await ns.sleep(3000)
+    await ns.asleep(3000)
     ns.print(`[${localeHHMMSS()}] Spawning playerServers`)
     ns.spawn('playerServers.js', 1)
   } else {

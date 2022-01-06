@@ -1,4 +1,4 @@
-import { settings, getItem, localeHHMMSS, getPlayerDetails } from 'common.js'
+import { settings, getItem, localeHHMMSS, getPlayerDetails, createUUID } from 'common.js'
 
 const hackScripts = ['hack.js', 'grow.js', 'weaken.js']
 
@@ -16,16 +16,6 @@ function convertMSToHHMMSS(ms = 0) {
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-}
-
-function createUUID() {
-  var dt = new Date().getTime()
-  var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    var r = (dt + Math.random() * 16) % 16 | 0
-    dt = Math.floor(dt / 16)
-    return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16)
-  })
-  return uuid
 }
 
 function weakenCyclesForGrow(growCycles) {
@@ -118,6 +108,7 @@ export async function main(ns) {
       ns.exit()
       return
     }
+
     serverMap.servers.home.ram = Math.max(0, serverMap.servers.home.ram - settings().homeRamReserved)
 
     const vulnerableServers = await getVulnerableServers(ns, serverMap.servers)
@@ -154,20 +145,20 @@ export async function main(ns) {
     }
     weakenCycles = growCycles
 
-    ns.print(
+    ns.tprint(
       `[${localeHHMMSS()}] Selected ${bestTarget} for a target. Planning to ${action} the server. Will wake up around ${localeHHMMSS(
         new Date().getTime() + weakenTime + 300
       )}`
     )
-    ns.print(
-      `[${localeHHMMSS()}] Stock values: baseSecurity: ${serverMap.servers[bestTarget].baseSecurityLevel}; minSecurity: ${serverMap.servers[bestTarget].minSecurityLevel
+    ns.tprint(
+      `[${localeHHMMSS()}] baseSecurity: ${serverMap.servers[bestTarget].baseSecurityLevel}; minSecurity: ${serverMap.servers[bestTarget].minSecurityLevel
       }; maxMoney: $${numberWithCommas(parseInt(serverMap.servers[bestTarget].maxMoney, 10))}`
     )
-    ns.print(`[${localeHHMMSS()}] Current values: security: ${Math.floor(securityLevel * 1000) / 1000}; money: $${numberWithCommas(parseInt(money, 10))}`)
-    ns.print(
+    ns.tprint(`[${localeHHMMSS()}] Current: security: ${Math.floor(securityLevel * 1000) / 1000}; money: $${numberWithCommas(parseInt(money, 10))}`)
+    ns.tprint(
       `[${localeHHMMSS()}] Time to: hack: ${convertMSToHHMMSS(hackTime)}; grow: ${convertMSToHHMMSS(growTime)}; weaken: ${convertMSToHHMMSS(weakenTime)}`
     )
-    ns.print(`[${localeHHMMSS()}] Delays: ${convertMSToHHMMSS(hackDelay)} for hacks, ${convertMSToHHMMSS(growDelay)} for grows`)
+    ns.tprint(`[${localeHHMMSS()}] Hack delay: ${convertMSToHHMMSS(hackDelay)}, Grow delay: ${convertMSToHHMMSS(growDelay)}`)
 
     if (action === 'weaken') {
       if (settings().changes.weaken * weakenCycles > securityLevel - serverMap.servers[bestTarget].minSecurityLevel) {
@@ -254,7 +245,7 @@ export async function main(ns) {
         const cyclesToRun = Math.max(0, Math.min(cyclesFittable, hackCycles))
 
         if (hackCycles) {
-          await ns.exec('hack.js', server.host, cyclesToRun, bestTarget, cyclesToRun, hackDelay, createUUID())
+          await ns.exec('hack.js', server.host, cyclesToRun, bestTarget, cyclesToRun, hackDelay, settings().affectStock, createUUID())
           hackCycles -= cyclesToRun
           cyclesFittable -= cyclesToRun
         }
@@ -265,18 +256,18 @@ export async function main(ns) {
         if (cyclesFittable && growCycles) {
           const growCyclesToRun = Math.min(growCycles, cyclesFittable)
 
-          await ns.exec('grow.js', server.host, growCyclesToRun, bestTarget, growCyclesToRun, growDelay, createUUID())
+          await ns.exec('grow.js', server.host, growCyclesToRun, bestTarget, growCyclesToRun, growDelay, settings().affectStock, createUUID())
           growCycles -= growCyclesToRun
           cyclesFittable -= growCyclesToRun
         }
 
         if (cyclesFittable) {
-          await ns.exec('weaken.js', server.host, cyclesFittable, bestTarget, cyclesFittable, 0, createUUID())
+          await ns.exec('weaken.js', server.host, cyclesFittable, bestTarget, cyclesFittable, 0, settings().affectStock, createUUID())
           weakenCycles -= cyclesFittable
         }
       }
     }
 
-    await ns.sleep(weakenTime + 300)
+    await ns.asleep(weakenTime + 300)
   }
 }

@@ -2,12 +2,13 @@ export async function main(ns) {
   const target = ns.args[0]
   const threads = ns.args[1]
   const delay = ns.args[2]
+  const affectStock = ns.args[3]
 
   if (delay && delay > 0) {
-    await ns.sleep(delay)
+    await ns.asleep(delay)
   }
 
   ns.print(`Starting operation: weaken on ${target} in ${threads} threads`)
-  await ns.weaken(target, { threads, stock: true })
+  await ns.weaken(target, { threads, stock: affectStock })
   ns.exit()
 }

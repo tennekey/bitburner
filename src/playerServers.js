@@ -1,14 +1,4 @@
-import { settings, getItem, setItem, localeHHMMSS } from 'common.js'
-
-function createUUID() {
-  var dt = new Date().getTime()
-  var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    var r = (dt + Math.random() * 16) % 16 | 0
-    dt = Math.floor(dt / 16)
-    return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16)
-  })
-  return uuid
-}
+import { settings, getItem, setItem, localeHHMMSS, createUUID } from 'common.js'
 
 function updateServer(ns, serverMap, host) {
   serverMap.servers[host] = {
@@ -92,7 +82,7 @@ export async function main(ns) {
         hostname = ns.purchaseServer(hostname, targetRam)
 
         if (hostname) {
-          ns.print(`[${localeHHMMSS()}] Bought new server: ${hostname} (${targetRam} GB)`)
+          ns.tprint(`[${localeHHMMSS()}] Bought new server: ${hostname} (${targetRam} GB)`)
 
           updateServer(ns, serverMap, hostname)
           didChange = true
@@ -120,7 +110,7 @@ export async function main(ns) {
       targetRam = Math.min(targetRam, settings.maxGbRam)
 
       purchasedServers = getPurchasedServers(ns)
-      if (targetRam > ns.getServerRam(purchasedServers[0]).shift()) {
+      if (targetRam > ns.getServerMaxRam(purchasedServers[0])) {
         didChange = true
         while (didChange) {
           didChange = false
@@ -131,7 +121,7 @@ export async function main(ns) {
               let hostname = `pserv-${targetRam}-${createUUID()}`
 
               await ns.killall(purchasedServers[0])
-              await ns.sleep(10)
+              await ns.asleep(10)
               const serverDeleted = await ns.deleteServer(purchasedServers[0])
               if (serverDeleted) {
                 hostname = await ns.purchaseServer(hostname, targetRam)
@@ -150,7 +140,7 @@ export async function main(ns) {
     }
 
     if (!didChange) {
-      await ns.sleep(5123)
+      await ns.asleep(5123)
     }
   }
 }

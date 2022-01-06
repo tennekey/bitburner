@@ -2,19 +2,20 @@ export function settings() {
   return {
     stockCommission: 100000,
     hackPrograms: ['BruteSSH.exe', 'FTPCrack.exe', 'relaySMTP.exe', 'HTTPWorm.exe', 'SQLInject.exe'],
-    homeRamReserved: 25,
+    homeRamReserved: 30,
     homeRamReservedBase: 20,
     homeRamExtraRamReserved: 12,
     homeRamBigMode: 64,
     minSecurityLevelOffset: 1,
     maxMoneyMultiplier: 0.9,
     minSecurityWeight: 100,
-    mapRefreshInterval: 12 * 60 * 60 * 1000,
+    mapRefreshInterval: 6 * 60 * 60 * 1000,
     maxWeakenTime: 60 * 60 * 1000,
     maxPlayerServers: 25,
     gbRamCost: 55000,
     maxGbRam: 1048576,
-    minGbRam: 32,
+    minGbRam: 64,
+    affectStock: false,
     totalMoneyAllocation: 0.9,
     keys: {
       serverMap: 'BB_SERVER_MAP',
@@ -64,6 +65,16 @@ export function getPlayerDetails(ns) {
     hackingLevel: ns.getHackingLevel(),
     portHacks,
   }
+}
+
+export function createUUID() {
+  var dt = new Date().getTime()
+  var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = (dt + Math.random() * 16) % 16 | 0
+    dt = Math.floor(dt / 16)
+    return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16)
+  })
+  return uuid
 }
 
 export function sellShorts(ns, stockSymbol) {
@@ -138,6 +149,7 @@ export async function main(ns) {
     getPlayerDetails,
     sellShorts,
     sellLongs,
-    getStockInfo
+    getStockInfo,
+    createUUID
   }
 }
