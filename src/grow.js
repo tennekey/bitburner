@@ -9,6 +9,9 @@ export async function main(ns) {
   }
 
   ns.print(`Starting operation: grow on ${target} in ${threads} threads`)
-  await ns.grow(target, { threads, stock: affectStock })
+  await ns.grow(target, {
+    threads,
+    stock: affectStock
+  })
   ns.exit()
 }

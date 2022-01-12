@@ -1,4 +1,6 @@
-import { localeHHMMSS } from 'common.js'
+import {
+  localeHHMMSS
+} from 'common.js'
 
 export async function main(ns) {
   ns.print(`[${localeHHMMSS()}] Starting runHacking`)

@@ -10,8 +10,8 @@ const filesToDownload = [
   'killAll.js',
   'runHacking.js',
   'contractor.js',
-  'stockMarketer4s.js',
-  'sellAllStock.js'
+  'stock/stockMarketer4s.js',
+  'stock/sellAllStock.js'
 ]
 const valuesToRemove = ['BB_SERVER_MAP']
 

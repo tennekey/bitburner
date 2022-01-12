@@ -9,6 +9,9 @@ export async function main(ns) {
   }
 
   ns.print(`Starting operation: weaken on ${target} in ${threads} threads`)
-  await ns.weaken(target, { threads, stock: affectStock })
+  await ns.weaken(target, {
+    threads,
+    stock: affectStock
+  })
   ns.exit()
 }

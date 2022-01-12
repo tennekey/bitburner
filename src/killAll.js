@@ -1,4 +1,8 @@
-import { settings, getItem, localeHHMMSS } from 'common.js'
+import {
+  settings,
+  getItem,
+  localeHHMMSS
+} from 'common.js'
 
 const scriptsToKill = [
   'mainHack.js',
@@ -23,9 +27,9 @@ export async function main(ns) {
     throw new Exception('Run the script from home')
   }
 
-  const serverMap = getItem(settings().keys.serverMap)
+  const serverMap = getItem(settings.keys.serverMap)
 
-  if (!serverMap || serverMap.lastUpdate < new Date().getTime() - settings().mapRefreshInterval) {
+  if (!serverMap || serverMap.lastUpdate < new Date().getTime() - settings.mapRefreshInterval) {
     ns.print(`[${localeHHMMSS()}] Spawning spider`)
     ns.spawn('spider.js', 1, 'killAll.js')
     ns.exit()

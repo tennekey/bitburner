@@ -1,4 +1,9 @@
-import { settings, setItem, localeHHMMSS, getPlayerDetails } from 'common.js'
+import {
+  settings,
+  setItem,
+  localeHHMMSS,
+  getPlayerDetails
+} from 'common.js'
 
 export async function main(ns) {
   ns.print(`[${localeHHMMSS()}] Starting spider`)
@@ -11,7 +16,10 @@ export async function main(ns) {
     throw new Exception('Run the script from home')
   }
 
-  const serverMap = { servers: {}, lastUpdate: new Date().getTime() }
+  const serverMap = {
+    servers: {},
+    lastUpdate: new Date().getTime()
+  }
   const scanArray = ['home']
 
   while (scanArray.length) {
@@ -33,7 +41,7 @@ export async function main(ns) {
     const playerDetails = getPlayerDetails(ns)
     if (!ns.hasRootAccess(host)) {
       if (serverMap.servers[host].ports <= playerDetails.portHacks && serverMap.servers[host].hackingLevel <= playerDetails.hackingLevel) {
-        settings().hackPrograms.forEach((hackProgram) => {
+        settings.hackPrograms.forEach((hackProgram) => {
           if (ns.fileExists(hackProgram, 'home')) {
             ns[hackProgram.split('.').shift().toLocaleLowerCase()](host)
           }
@@ -107,7 +115,7 @@ export async function main(ns) {
     })
   }
 
-  setItem(settings().keys.serverMap, serverMap)
+  setItem(settings.keys.serverMap, serverMap)
 
   if (!scriptToRunAfter) {
     ns.print(`[${localeHHMMSS()}] Spawning mainHack`)

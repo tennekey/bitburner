@@ -1,4 +1,7 @@
-import { sellShorts, sellLongs } from 'common.js'
+import {
+  sellShorts,
+  sellLongs
+} from 'common.js'
 
 export async function main(ns) {
   ns.disableLog('ALL')

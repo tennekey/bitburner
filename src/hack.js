@@ -9,6 +9,9 @@ export async function main(ns) {
   }
 
   ns.print(`Starting operation: hack on ${target} in ${threads} threads`)
-  await ns.hack(target, { threads, stock: affectStock })
+  await ns.hack(target, {
+    threads,
+    stock: affectStock
+  })
   ns.exit()
 }

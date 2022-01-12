@@ -1,4 +1,10 @@
-import { settings, localeHHMMSS, sellShorts, sellLongs, getStockInfo } from 'common.js'
+import {
+  settings,
+  localeHHMMSS,
+  sellShorts,
+  sellLongs,
+  getStockInfo
+} from 'common.js'
 // NOTE: You need to be on BitNode 8 to Buy/Sell Shorts.
 // Comment out lines 17, 30, & 57-62 if not
 
@@ -6,18 +12,18 @@ let stockSymbols
 let corpus
 
 function getMoney(ns) {
-  return ns.getServerMoneyAvailable('home') - 5 * settings().stockCommission
+  return ns.getServerMoneyAvailable('home') - 5 * settings.stockCommission
 }
 
 // Only if not going to lose money
 function sellUnderperforming(ns, stockSymbol) {
   const stockInfo = getStockInfo(ns, stockSymbol)
 
-  if (stockInfo.sharesShort && stockInfo.sharesShort * (stockInfo.avgPriceShort - stockInfo.stockAskPrice) > 2 * settings().stockCommission) {
+  if (stockInfo.sharesShort && stockInfo.sharesShort * (stockInfo.avgPriceShort - stockInfo.stockAskPrice) > 2 * settings.stockCommission) {
     sellShorts(ns, stockSymbol)
   }
 
-  if (stockInfo.sharesLong && stockInfo.sharesLong * (stockInfo.stockBidPrice - stockInfo.avgPriceLong) > 2 * settings().stockCommission) {
+  if (stockInfo.sharesLong && stockInfo.sharesLong * (stockInfo.stockBidPrice - stockInfo.avgPriceLong) > 2 * settings.stockCommission) {
     sellLongs(ns, stockSymbol)
   }
 }
@@ -38,7 +44,7 @@ function sellWrongPosition(ns, stockSymbol) {
 
 function buyNewShares(ns, stockSymbol) {
   const stockInfo = getStockInfo(ns, stockSymbol)
-  const minimumMoneyToInvest = 10 * settings().stockCommission
+  const minimumMoneyToInvest = 10 * settings.stockCommission
 
   if (!stockInfo.haveMaxShares && getMoney(ns) > minimumMoneyToInvest) {
     let maxSharesToBuy
@@ -75,7 +81,7 @@ export async function main(ns) {
 
   stockSymbols = ns.stock.getSymbols()
 
-  corpus = ns.getServerMoneyAvailable('home') - settings().stockCommission
+  corpus = ns.getServerMoneyAvailable('home') - settings.stockCommission
   stockSymbols.forEach((stockSymbol) => {
     const stockInfo = getStockInfo(ns, stockSymbol)
 

@@ -1,5 +1,9 @@
 // Based on https://github.com/danielyxie/bitburner/blob/master/src/data/codingcontracttypes.ts
-import { settings, getItem, localeHHMMSS } from 'common.js'
+import {
+  settings,
+  getItem,
+  localeHHMMSS
+} from 'common.js'
 
 function convert2DArrayToString(arr) {
   var components = []
@@ -11,8 +15,7 @@ function convert2DArrayToString(arr) {
   return components.join(',').replace(/\s/g, '')
 }
 
-const codingContractTypesMetadata = [
-  {
+const codingContractTypesMetadata = [{
     name: 'Find Largest Prime Factor',
     solver: function (data) {
       var fac = 2
@@ -65,7 +68,7 @@ const codingContractTypesMetadata = [
         // Up
         for (var col = l; col <= r; col++) {
           spiral[k] = data[u][col]
-          ++k
+            ++k
         }
         if (++u > d) {
           break
@@ -73,7 +76,7 @@ const codingContractTypesMetadata = [
         // Right
         for (var row = u; row <= d; row++) {
           spiral[k] = data[row][r]
-          ++k
+            ++k
         }
         if (--r < l) {
           break
@@ -81,7 +84,7 @@ const codingContractTypesMetadata = [
         // Down
         for (var col = r; col >= l; col--) {
           spiral[k] = data[d][col]
-          ++k
+            ++k
         }
         if (--d < u) {
           break
@@ -89,7 +92,7 @@ const codingContractTypesMetadata = [
         // Left
         for (var row = d; row >= u; row--) {
           spiral[k] = data[row][l]
-          ++k
+            ++k
         }
         if (++l > r) {
           break
@@ -303,6 +306,7 @@ const codingContractTypesMetadata = [
           left > 0 ? --left : ++right
         }
       }
+
       function dfs(pair, index, left, right, s, solution, res) {
         if (s.length === index) {
           if (left === 0 && right === 0 && pair === 0) {
@@ -337,6 +341,7 @@ const codingContractTypesMetadata = [
     solver: function (data) {
       var num = data[0]
       var target = data[1]
+
       function helper(res, path, num, target, pos, evaluated, multed) {
         if (pos === num.length) {
           if (target === evaluated) {
@@ -392,7 +397,7 @@ export async function main(ns) {
     throw new Exception('Run the script from home')
   }
 
-  const serverMap = getItem(settings().keys.serverMap)
+  const serverMap = getItem(settings.keys.serverMap)
   const contractsDb = []
 
   Object.keys(serverMap.servers).forEach((hostname) => {
@@ -421,7 +426,9 @@ export async function main(ns) {
       const answer = findAnswer(contract)
 
       if (answer != null) {
-        const solvingResult = ns.codingcontract.attempt(answer, contract.contract, contract.hostname, { returnReward: true })
+        const solvingResult = ns.codingcontract.attempt(answer, contract.contract, contract.hostname, {
+          returnReward: true
+        })
 
         if (solvingResult) {
           ns.tprint(`[${localeHHMMSS()}] Solved ${contract.contract} on ${contract.hostname}. ${solvingResult}`)
