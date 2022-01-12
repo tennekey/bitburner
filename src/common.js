@@ -12,7 +12,6 @@ export function settings() {
     mapRefreshInterval: 6 * 60 * 60 * 1000, // Time interval for main process to re-crawl servers for refreshed info
     maxWeakenTime: 30 * 60 * 1000, // Max time to wait for weaken process
     maxPlayerServers: 25,
-    gbRamCost: 55000,
     maxGbRam: 1048576, // Maximum RAM amount (in GB) allowed for player purchased servers
     minGbRam: 64, // Minimum RAM amount (in GB) for auto-purchased servers
     affectStock: false, // Whether hack/grow/weaken should affect stock prices
