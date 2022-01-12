@@ -6,7 +6,7 @@ import {
     getMemberNames,
     getMemberInformation,
     sortBy
-} from 'common.js'
+} from '/gang/common.js'
 
 function getMoney(ns) {
     return ns.getServerMoneyAvailable('home') - 1000000000

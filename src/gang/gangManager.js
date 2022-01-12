@@ -9,7 +9,7 @@ import {
     sortBy,
     SORT_TYPES,
     DIRECTIONS
-} from 'common.js'
+} from '/gang/common.js'
 
 function getMyGangInformation(ns) {
     return ns.gang.getGangInformation()
@@ -47,8 +47,8 @@ export async function main(ns) {
         setItem(settings.keys.buyEquipment, buyEquipment)
         setItem(settings.keys.strAscMultHardLimit, strengthAscensionMultHardLimit)
 
-        const equipmentsToBuy = getItem(settings.keys.equipmentList) || []
-        const augumentationssToBuy = getItem(settings.keys.augumentationList) || []
+        const equipmentToBuy = getItem(settings.keys.equipmentList) || []
+        const augumentationsToBuy = getItem(settings.keys.augumentationList) || []
 
         while (ns.gang.canRecruitMember()) {
             const gangMemberNames = getMemberNames(ns)
@@ -70,7 +70,7 @@ export async function main(ns) {
             gangMemberNames.forEach((gangMemberName) => {
                 const gangMemberInfo = getMemberInformation(ns, gangMemberName)
 
-                equipmentsToBuy.forEach((equipment) => {
+                equipmentToBuy.forEach((equipment) => {
                     if (gangMemberInfo.upgrades.includes(equipment.name)) return
 
                     const boughtEquipment = ns.gang.purchaseEquipment(gangMemberName, equipment.name)
@@ -89,7 +89,7 @@ export async function main(ns) {
                 gangMemberNames.forEach((gangMemberName) => {
                     const gangMemberInfo = getMemberInformation(ns, gangMemberName)
 
-                    augumentationssToBuy
+                    augumentationsToBuy
                         .filter((aug) => !aug.hack)
                         .forEach((equipment) => {
                             if (gangMemberInfo.augmentations.includes(equipment.name)) return
@@ -108,7 +108,7 @@ export async function main(ns) {
                     gangMemberNames.forEach((gangMemberName) => {
                         const gangMemberInfo = getMemberInformation(ns, gangMemberName)
 
-                        augumentationssToBuy
+                        augumentationsToBuy
                             .filter((aug) => aug.hack)
                             .forEach((equipment) => {
                                 if (gangMemberInfo.augmentations.includes(equipment.name)) return
@@ -143,9 +143,9 @@ export async function main(ns) {
                 gangMemberNames.forEach((gangMemberName) => {
                     const gangMemberInfo = getMemberInformation(ns, gangMemberName)
                     if (gangMemberInfo.str_asc_mult < strengthAscensionMultExpectation) {
-                        const boughtEquipment = equipmentsToBuy.filter((equipment) => gangMemberInfo.upgrades.includes(equipment.name))
+                        const boughtEquipment = equipmentToBuy.filter((equipment) => gangMemberInfo.upgrades.includes(equipment.name))
 
-                        if ((isEarlyAscension && boughtEquipment.length > 10) || boughtEquipment.length === equipmentsToBuy.length) {
+                        if ((isEarlyAscension && boughtEquipment.length > 10) || boughtEquipment.length === equipmentToBuy.length) {
                             gangMembersToAscend.push(gangMemberName)
                         }
                     }

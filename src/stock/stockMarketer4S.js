@@ -4,7 +4,7 @@ import {
   sellShorts,
   sellLongs,
   getStockInfo
-} from 'common.js'
+} from '/stock/common.js'
 // NOTE: You need to be on BitNode 8 to Buy/Sell Shorts.
 // Comment out lines 17, 30, & 57-62 if not
 

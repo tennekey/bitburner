@@ -1,7 +1,7 @@
 import {
   sellShorts,
   sellLongs
-} from 'common.js'
+} from '/stock/common.js'
 
 export async function main(ns) {
   ns.disableLog('ALL')

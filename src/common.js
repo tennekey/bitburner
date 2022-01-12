@@ -9,8 +9,6 @@ export const settings = {
   minSecurityWeight: 100,
   mapRefreshInterval: 6 * 60 * 60 * 1000, // Time interval for main process to re-crawl servers for refreshed info
   maxWeakenTime: 30 * 60 * 1000, // Max time to wait for weaken process
-  maxPlayerServers: 25,
-  maxGbRam: 1048576, // Maximum RAM amount (in GB) allowed for player purchased servers
   minGbRam: 64, // Minimum RAM amount (in GB) for auto-purchased servers
   affectStock: false, // Whether hack/grow/weaken should affect stock prices
   keys: {
@@ -50,7 +48,7 @@ export function setItem(key, value) {
 export function getPlayerDetails(ns) {
   let portHacks = 0
 
-  settings().hackPrograms.forEach((hackProgram) => {
+  settings.hackPrograms.forEach((hackProgram) => {
     if (ns.fileExists(hackProgram, 'home')) {
       portHacks += 1
     }

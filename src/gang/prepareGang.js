@@ -1,7 +1,7 @@
 import {
     settings,
     setItem
-} from 'common.js'
+} from '/gang/common.js'
 
 export async function main(ns) {
     ns.disableLog('ALL')
