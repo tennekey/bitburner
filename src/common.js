@@ -1,8 +1,6 @@
 export const settings = {
   hackPrograms: ['BruteSSH.exe', 'FTPCrack.exe', 'relaySMTP.exe', 'HTTPWorm.exe', 'SQLInject.exe'],
-  homeRamReserved: 100,
-  homeRamReservedBase: 20, // Represents how much memory the base hacking scripts will take
-  homeRamExtraRamReserved: 80, //Represents any additional memory (in GB) to be set aside for player use
+  homeRamReserved: 40, // Represents how much memory the base hacking scripts will take
   homeRamBigMode: 64,
   minSecurityLevelOffset: 1,
   maxMoneyMultiplier: 0.9, // Ratio of max money available on server before hack will carry out
